@@ -25,7 +25,7 @@ export const homepage = {
       "Sonbahar / Kış koleksiyonumuz, doğanın sıcak paletinden ilham alarak gardırobunuza yeni bir soluk getiriyor.",
     image: "/images/campaign/campaign-01.svg",
     cta: "KOLEKSİYONU KEŞFEDİN",
-    ctaHref: "/koleksiyon/koleksiyon",
+    ctaHref: "/koleksiyon/giyim",
   },
   social: {
     handle: "@qubiofficial",

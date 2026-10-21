@@ -9,17 +9,23 @@ import type { Product } from "@/types";
 
 interface ProductInfoProps {
   product: Product;
+  onColorChange?: (colorSlug: string) => void;
 }
 
-export function ProductInfo({ product }: ProductInfoProps) {
+export function ProductInfo({ product, onColorChange }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState(
     product.colors[0]?.slug ?? ""
   );
   const [selectedSize, setSelectedSize] = useState("");
 
+  function handleColorChange(slug: string) {
+    setSelectedColor(slug);
+    onColorChange?.(slug);
+  }
+
   const accordionItems = [
     {
-      title: "Aciklama",
+      title: "Açıklama",
       content: (
         <p className="text-sm leading-relaxed">{product.description}</p>
       ),
@@ -35,7 +41,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       ),
     },
     {
-      title: "Bakim Talimatlari",
+      title: "Bakım Talimatları",
       content: (
         <ul className="text-sm space-y-1">
           {product.care.map((c, i) => (
@@ -45,11 +51,18 @@ export function ProductInfo({ product }: ProductInfoProps) {
       ),
     },
     {
-      title: "Kargo ve Iade",
+      title: "Kargo ve İade",
       content: (
-        <div className="text-sm space-y-2">
-          <p>3000 TL uzeri siparislerde ucretsiz kargo.</p>
-          <p>14 gun icinde ucretsiz iade.</p>
+        <div className="text-sm space-y-3">
+          <div>
+            <p className="font-medium mb-1">Teslimat</p>
+            <p>Standart teslimat süresi: 2–5 iş günü.</p>
+            <p>Kargo ücreti: 99,99 ₺ (3.000 ₺ üzeri alışverişlerde ücretsiz kargo).</p>
+          </div>
+          <div>
+            <p className="font-medium mb-1">İade</p>
+            <p>Ürünlerimizi teslim aldığınız tarihten itibaren 15 gün içinde iade edebilirsiniz. İade kargo ücreti alıcıya aittir. Ürünün orijinal ambalajında, kullanılmamış ve etiketleri sökülmemiş olması gerekmektedir.</p>
+          </div>
         </div>
       ),
     },
@@ -103,7 +116,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
               <button
                 key={color.slug}
                 type="button"
-                onClick={() => setSelectedColor(color.slug)}
+                onClick={() => handleColorChange(color.slug)}
                 className={cn(
                   "w-7 h-7 rounded-full cursor-pointer transition-shadow",
                   selectedColor === color.slug
