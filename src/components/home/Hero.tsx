@@ -19,8 +19,13 @@ export function Hero() {
     <section className="relative h-[70vh] md:h-[85vh] overflow-hidden">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${hero.image})` }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${hero.image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          imageRendering: "auto",
+        }}
       />
 
       {/* Overlay */}

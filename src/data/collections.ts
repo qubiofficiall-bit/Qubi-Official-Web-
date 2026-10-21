@@ -25,10 +25,13 @@ export const collections: Collection[] = [
       "prod-003",
       "prod-004",
       "prod-005",
+      "prod-006",
       "prod-007",
       "prod-008",
       "prod-009",
       "prod-010",
+      "prod-011",
+      "prod-012",
     ],
   },
   {

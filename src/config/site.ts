@@ -5,7 +5,10 @@ export const siteConfig = {
   url: "https://qubiofficial.com",
   currency: "TRY" as const,
   locale: "tr-TR" as const,
-  announcement: "3000 TL ÜZERİ SİPARİŞLERDE ÜCRETSİZ KARGO",
+  announcement: "3000 TL ÜZERİ ALIŞVERİŞLERDE ÜCRETSİZ KARGO",
+  shippingCost: 99.99,
+  freeShippingThreshold: 3000,
+  contactEmail: "qubiofficiall@gmail.com",
   social: [
     { label: "Instagram", href: "#", icon: "instagram" },
     { label: "TikTok", href: "#", icon: "tiktok" },
@@ -34,7 +37,7 @@ export const siteConfig = {
         links: [
           { label: "Hikayemiz", href: "/hakkimizda" },
           { label: "Journal", href: "/journal" },
-          { label: "İletişim", href: "/iletisim" },
+          { label: "İletişim", href: "mailto:qubiofficiall@gmail.com" },
         ],
       },
       {

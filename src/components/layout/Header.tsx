@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Heart, ShoppingBag, Menu } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu, User } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { DesktopNav } from "@/components/layout/DesktopNav";
 import { MobileNav } from "@/components/layout/MobileNav";
@@ -63,6 +63,14 @@ export function Header({ announcementVisible = true }: HeaderProps) {
             >
               <Search className="h-5 w-5" />
             </button>
+
+            <Link
+              href="/hesap"
+              className="hidden lg:block text-[var(--color-fg)] transition-colors hover:text-[var(--color-muted-fg)]"
+              aria-label="Hesap"
+            >
+              <User className="h-5 w-5" />
+            </Link>
 
             <Link
               href="/wishlist"

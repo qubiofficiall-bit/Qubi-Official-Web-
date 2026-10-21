@@ -8,11 +8,18 @@ import { useCart } from "@/context/CartContext";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { Button } from "@/components/ui/Button";
 
+const FREE_SHIPPING_THRESHOLD = 3000;
+const SHIPPING_COST = 99.99;
+
 export function CartDrawer() {
   const { items, isOpen, dispatch, removeFromCart, updateQuantity, cartTotal, cartCount } =
     useCart();
 
   useLockBodyScroll(isOpen);
+
+  const shippingFee = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const vatAmount = (cartTotal + shippingFee) * 0.10;
+  const grandTotal = cartTotal + shippingFee;
 
   function closeCart() {
     dispatch({ type: "CLOSE_CART" });
@@ -40,7 +47,7 @@ export function CartDrawer() {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
           <h2 className="text-xs uppercase tracking-[0.15em] font-[family-name:var(--font-body)]">
-            SEPETINIZ ({cartCount})
+            SEPETİNİZ ({cartCount})
           </h2>
           <button
             type="button"
@@ -56,12 +63,12 @@ export function CartDrawer() {
           /* Empty state */
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <p className="text-sm text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-              Sepetiniz bos
+              Sepetiniz boş
             </p>
             <div className="mt-6">
               <Button onClick={closeCart}>
                 <Link href="/koleksiyon/yeni-gelenler">
-                  ALISVERISE BASLA
+                  ALIŞVERİŞE BAŞLA
                 </Link>
               </Button>
             </div>
@@ -131,7 +138,7 @@ export function CartDrawer() {
                                 updateQuantity(key, item.quantity + 1)
                               }
                               className="px-2 py-1 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] cursor-pointer"
-                              aria-label="Artir"
+                              aria-label="Artır"
                             >
                               <Plus className="h-3 w-3" />
                             </button>
@@ -146,7 +153,7 @@ export function CartDrawer() {
                               type="button"
                               onClick={() => removeFromCart(key)}
                               className="text-[var(--color-muted-fg)] hover:text-[var(--color-error)] cursor-pointer"
-                              aria-label="Kaldir"
+                              aria-label="Kaldır"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </button>
@@ -160,24 +167,54 @@ export function CartDrawer() {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-[var(--color-border)] px-6 py-5 space-y-4">
+            <div className="border-t border-[var(--color-border)] px-6 py-5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)]">
-                  ARA TOPLAM
+                <span className="text-xs text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
+                  Ara Toplam
                 </span>
                 <span className="text-sm font-[family-name:var(--font-body)]">
                   {formatPrice(cartTotal)}
                 </span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
+                  Kargo
+                </span>
+                <span className="text-sm font-[family-name:var(--font-body)]">
+                  {shippingFee === 0 ? (
+                    <span className="text-green-600">Ücretsiz</span>
+                  ) : (
+                    formatPrice(shippingFee)
+                  )}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
+                <span>KDV (%10 dahil)</span>
+                <span>{formatPrice(vatAmount)}</span>
+              </div>
+              <hr className="border-[var(--color-border)]" />
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)] font-medium">
+                  TOPLAM
+                </span>
+                <span className="text-base font-medium font-[family-name:var(--font-body)]">
+                  {formatPrice(grandTotal)}
+                </span>
+              </div>
+              {shippingFee > 0 && (
+                <p className="text-[10px] text-[var(--color-muted-fg)] font-[family-name:var(--font-body)] text-center">
+                  {formatPrice(FREE_SHIPPING_THRESHOLD - cartTotal)} daha ekleyin, ücretsiz kargo kazanın!
+                </p>
+              )}
               <Button variant="primary" size="lg" className="w-full">
-                ODEMEYE GEC
+                ÖDEMEYE GEÇ
               </Button>
               <button
                 type="button"
                 onClick={closeCart}
                 className="w-full text-center text-xs underline underline-offset-4 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] font-[family-name:var(--font-body)] transition-colors cursor-pointer"
               >
-                Alisverise Devam Et
+                Alışverişe Devam Et
               </button>
             </div>
           </>
