@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { X, ChevronDown } from "lucide-react";
 import { mainNavigation } from "@/data/navigation";
 import { siteConfig } from "@/config/site";
 import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/utils";
+import { useDialog } from "@/hooks/useDialog";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -16,16 +18,8 @@ interface MobileNavProps {
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  const dialogRef = useDialog<HTMLDivElement>(isOpen, onClose);
+  useLockBodyScroll(isOpen);
 
   function toggleExpand(href: string) {
     setExpandedItem((prev) => (prev === href ? null : href));
@@ -33,6 +27,12 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
 
   return (
     <div
+      ref={dialogRef}
+      id="mobile-nav"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menü"
+      inert={!isOpen}
       className={cn(
         "fixed inset-0 z-[var(--z-overlay)] bg-[var(--color-bg)] transition-transform duration-500 ease-[var(--ease-editorial)]",
         isOpen ? "translate-x-0" : "-translate-x-full"
@@ -45,15 +45,15 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
           <button
             type="button"
             onClick={onClose}
-            className="text-[var(--color-fg)] cursor-pointer"
-            aria-label="Kapat"
+            className="-m-2 p-2 text-[var(--color-fg)] cursor-pointer"
+            aria-label="Menüyü kapat"
           >
             <X className="h-6 w-6" />
           </button>
         </div>
 
         {/* Nav Items */}
-        <nav className="flex-1 overflow-y-auto px-4 sm:px-6 pt-8">
+        <nav aria-label="Ana menü" className="flex-1 overflow-y-auto px-4 sm:px-6 pt-8">
           <div className="flex flex-col gap-2">
             {mainNavigation.map((item) => (
               <div key={item.href}>
@@ -70,7 +70,9 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                       type="button"
                       onClick={() => toggleExpand(item.href)}
                       className="p-2 text-[var(--color-muted-fg)] cursor-pointer"
-                      aria-label="Alt menüyü aç"
+                      aria-label={`${item.label} alt menüsü`}
+                      aria-expanded={expandedItem === item.href}
+                      aria-controls={`mobile-submenu-${item.href.replace(/\W+/g, "-")}`}
                     >
                       <ChevronDown
                         className={cn(
@@ -83,7 +85,10 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 </div>
 
                 {item.children && expandedItem === item.href && (
-                  <div className="ml-4 mt-2 flex flex-col gap-2 pb-2">
+                  <div
+                    id={`mobile-submenu-${item.href.replace(/\W+/g, "-")}`}
+                    className="ml-4 mt-2 flex flex-col gap-2 pb-2"
+                  >
                     {item.children.map((child) => (
                       <Link
                         key={child.href}
@@ -111,6 +116,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 className="text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)] text-[var(--color-muted-fg)] transition-colors hover:text-[var(--color-fg)]"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${social.label} (yeni sekmede açılır)`}
               >
                 {social.label}
               </a>

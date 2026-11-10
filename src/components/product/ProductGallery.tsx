@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { ProductImage } from "@/types";
@@ -9,10 +9,28 @@ interface ProductGalleryProps {
   images: ProductImage[];
 }
 
+// Same `sizes` for the desktop main image and the first mobile slide, so the
+// browser resolves both to the same file and downloads it only once.
+const MAIN_SIZES = "(max-width: 1024px) 100vw, 55vw";
+
 export function ProductGallery({ images }: ProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   if (images.length === 0) return null;
+
+  function goToSlide(i: number) {
+    setSelectedIndex(i);
+    const track = trackRef.current;
+    if (track) track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+  }
+
+  function handleScroll() {
+    const track = trackRef.current;
+    if (!track || track.clientWidth === 0) return;
+    const i = Math.round(track.scrollLeft / track.clientWidth);
+    if (i !== selectedIndex) setSelectedIndex(i);
+  }
 
   return (
     <div>
@@ -25,6 +43,8 @@ export function ProductGallery({ images }: ProductGalleryProps) {
               key={i}
               type="button"
               onClick={() => setSelectedIndex(i)}
+              aria-label={`Görsel ${i + 1}: ${img.alt}`}
+              aria-pressed={selectedIndex === i}
               className={cn(
                 "relative aspect-[3/4] w-[60px] overflow-hidden cursor-pointer border transition-colors",
                 selectedIndex === i
@@ -34,7 +54,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
             >
               <Image
                 src={img.src}
-                alt={img.alt}
+                alt=""
                 fill
                 className="object-cover"
                 sizes="60px"
@@ -49,16 +69,24 @@ export function ProductGallery({ images }: ProductGalleryProps) {
             src={images[selectedIndex].src}
             alt={images[selectedIndex].alt}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 55vw"
+            sizes={MAIN_SIZES}
           />
         </div>
       </div>
 
       {/* Mobile: horizontal scroll with snap */}
       <div className="lg:hidden">
-        <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-0">
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          role="region"
+          aria-label="Ürün görselleri"
+          tabIndex={0}
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-0"
+        >
           {images.map((img, i) => (
             <div
               key={i}
@@ -68,29 +96,35 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                 src={img.src}
                 alt={img.alt}
                 fill
-                priority={i === 0}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : undefined}
                 className="object-cover"
-                sizes="100vw"
+                sizes={i === 0 ? MAIN_SIZES : "100vw"}
               />
             </div>
           ))}
         </div>
         {/* Dot indicators */}
         {images.length > 1 && (
-          <div className="flex justify-center gap-2 mt-4">
+          <div className="flex justify-center mt-2 -mb-2">
             {images.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => setSelectedIndex(i)}
-                className={cn(
-                  "w-2 h-2 rounded-full transition-colors cursor-pointer",
-                  i === selectedIndex
-                    ? "bg-[var(--color-fg)]"
-                    : "bg-[var(--color-border)]"
-                )}
-                aria-label={`Gorsel ${i + 1}`}
-              />
+                onClick={() => goToSlide(i)}
+                className="-mx-1 p-2 cursor-pointer"
+                aria-label={`Görsel ${i + 1}`}
+                aria-current={i === selectedIndex ? "true" : undefined}
+              >
+                <span
+                  className={cn(
+                    "block w-2 h-2 rounded-full transition-colors",
+                    i === selectedIndex
+                      ? "bg-[var(--color-fg)]"
+                      : "bg-[var(--color-border)]"
+                  )}
+                />
+              </button>
             ))}
           </div>
         )}

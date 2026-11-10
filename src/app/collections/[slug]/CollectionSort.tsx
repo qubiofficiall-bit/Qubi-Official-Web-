@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const sortOptions = [
-  { label: "One Cikan", value: "featured" },
+  { label: "Öne Çıkan", value: "featured" },
   { label: "En Yeni", value: "newest" },
   { label: "Fiyat (Artan)", value: "price-asc" },
   { label: "Fiyat (Azalan)", value: "price-desc" },
@@ -14,12 +14,13 @@ export function CollectionSort() {
   const [active, setActive] = useState("featured");
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4" role="group" aria-label="Sıralama">
       {sortOptions.map((opt) => (
         <button
           key={opt.value}
           type="button"
           onClick={() => setActive(opt.value)}
+          aria-pressed={active === opt.value}
           className={cn(
             "text-xs font-[family-name:var(--font-body)] transition-colors cursor-pointer hidden sm:inline-block",
             active === opt.value
@@ -34,6 +35,7 @@ export function CollectionSort() {
       <select
         value={active}
         onChange={(e) => setActive(e.target.value)}
+        aria-label="Sırala"
         className="sm:hidden text-xs font-[family-name:var(--font-body)] bg-transparent border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] cursor-pointer"
       >
         {sortOptions.map((opt) => (

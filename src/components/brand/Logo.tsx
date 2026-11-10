@@ -10,6 +10,7 @@ export function Logo({ className, variant = "dark" }: LogoProps) {
   return (
     <Link
       href="/"
+      aria-label="Qubi Official ana sayfa"
       className={cn(
         "inline-flex flex-col items-center leading-none",
         variant === "dark" ? "text-[var(--color-fg)]" : "text-white",

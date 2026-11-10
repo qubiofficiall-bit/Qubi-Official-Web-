@@ -6,7 +6,8 @@ import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { cn, formatPrice, generateCartItemKey } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
-import { Button } from "@/components/ui/Button";
+import { useDialog } from "@/hooks/useDialog";
+import { Button, buttonVariants } from "@/components/ui/Button";
 
 export function CartDrawer() {
   const { items, isOpen, dispatch, removeFromCart, updateQuantity, cartTotal, cartCount } =
@@ -17,6 +18,8 @@ export function CartDrawer() {
   function closeCart() {
     dispatch({ type: "CLOSE_CART" });
   }
+
+  const dialogRef = useDialog<HTMLDivElement>(isOpen, closeCart);
 
   return (
     <>
@@ -32,6 +35,11 @@ export function CartDrawer() {
 
       {/* Drawer */}
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-title"
+        inert={!isOpen}
         className={cn(
           "fixed top-0 right-0 h-full w-full sm:w-[var(--drawer-width)] bg-[var(--color-bg)] z-[var(--z-drawer)] flex flex-col transition-transform duration-500 ease-[var(--ease-editorial)]",
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -39,14 +47,14 @@ export function CartDrawer() {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
-          <h2 className="text-xs uppercase tracking-[0.15em] font-[family-name:var(--font-body)]">
-            SEPETINIZ ({cartCount})
+          <h2 id="cart-title" className="text-xs uppercase tracking-[0.15em] font-[family-name:var(--font-body)]">
+            SEPETİNİZ ({cartCount})
           </h2>
           <button
             type="button"
             onClick={closeCart}
-            className="text-[var(--color-fg)] cursor-pointer"
-            aria-label="Kapat"
+            className="-m-2 p-2 text-[var(--color-fg)] cursor-pointer"
+            aria-label="Sepeti kapat"
           >
             <X className="h-5 w-5" />
           </button>
@@ -56,14 +64,16 @@ export function CartDrawer() {
           /* Empty state */
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <p className="text-sm text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-              Sepetiniz bos
+              Sepetiniz boş
             </p>
             <div className="mt-6">
-              <Button onClick={closeCart}>
-                <Link href="/koleksiyon/yeni-gelenler">
-                  ALISVERISE BASLA
-                </Link>
-              </Button>
+              <Link
+                href="/koleksiyon/yeni-gelenler"
+                onClick={closeCart}
+                className={buttonVariants()}
+              >
+                ALIŞVERİŞE BAŞLA
+              </Link>
             </div>
           </div>
         ) : (
@@ -83,11 +93,13 @@ export function CartDrawer() {
                       <Link
                         href={`/products/${item.slug}`}
                         onClick={closeCart}
+                        tabIndex={-1}
+                        aria-hidden="true"
                         className="relative w-20 aspect-[3/4] flex-shrink-0 overflow-hidden bg-[var(--color-muted)]"
                       >
                         <Image
                           src={item.image}
-                          alt={item.name}
+                          alt=""
                           fill
                           className="object-cover"
                           sizes="80px"
@@ -117,8 +129,8 @@ export function CartDrawer() {
                               onClick={() =>
                                 updateQuantity(key, item.quantity - 1)
                               }
-                              className="px-2 py-1 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] cursor-pointer"
-                              aria-label="Azalt"
+                              className="px-2.5 py-2 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] cursor-pointer"
+                              aria-label={`${item.name} adedini azalt`}
                             >
                               <Minus className="h-3 w-3" />
                             </button>
@@ -130,8 +142,8 @@ export function CartDrawer() {
                               onClick={() =>
                                 updateQuantity(key, item.quantity + 1)
                               }
-                              className="px-2 py-1 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] cursor-pointer"
-                              aria-label="Artir"
+                              className="px-2.5 py-2 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] cursor-pointer"
+                              aria-label={`${item.name} adedini artır`}
                             >
                               <Plus className="h-3 w-3" />
                             </button>
@@ -145,8 +157,8 @@ export function CartDrawer() {
                             <button
                               type="button"
                               onClick={() => removeFromCart(key)}
-                              className="text-[var(--color-muted-fg)] hover:text-[var(--color-error)] cursor-pointer"
-                              aria-label="Kaldir"
+                              className="-m-2 p-2 text-[var(--color-muted-fg)] hover:text-[var(--color-error)] cursor-pointer"
+                              aria-label={`${item.name} ürününü sepetten kaldır`}
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </button>
@@ -170,14 +182,14 @@ export function CartDrawer() {
                 </span>
               </div>
               <Button variant="primary" size="lg" className="w-full">
-                ODEMEYE GEC
+                ÖDEMEYE GEÇ
               </Button>
               <button
                 type="button"
                 onClick={closeCart}
                 className="w-full text-center text-xs underline underline-offset-4 text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] font-[family-name:var(--font-body)] transition-colors cursor-pointer"
               >
-                Alisverise Devam Et
+                Alışverişe Devam Et
               </button>
             </div>
           </>

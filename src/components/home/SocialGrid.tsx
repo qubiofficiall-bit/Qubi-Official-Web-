@@ -15,7 +15,7 @@ export function SocialGrid() {
             {homepage.social.handle}
           </h2>
           <p className="mt-2 text-sm text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-            Qubi dunyasini takip edin.
+            Qubi dünyasını takip edin.
           </p>
         </div>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
@@ -25,11 +25,12 @@ export function SocialGrid() {
               href={instagramLink}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`Instagram'da Qubi Official gönderisi ${i + 1} (yeni sekmede açılır)`}
               className="group relative aspect-square overflow-hidden bg-[var(--color-muted)]"
             >
               <Image
                 src={img}
-                alt={`Qubi Official Instagram ${i + 1}`}
+                alt=""
                 fill
                 className="object-cover transition-opacity duration-300 group-hover:opacity-80"
                 sizes="(max-width: 768px) 33vw, 16vw"

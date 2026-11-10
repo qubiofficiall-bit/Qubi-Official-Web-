@@ -8,7 +8,7 @@ export function CategoryGrid() {
     <section className="py-16 md:py-24">
       <Container>
         <h2 className="font-[family-name:var(--font-body)] text-xs uppercase tracking-[0.15em] mb-10 text-center">
-          {"KATEGORILER"}
+          KATEGORİLER
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {categories.map((cat) => (
@@ -19,7 +19,7 @@ export function CategoryGrid() {
             >
               <Image
                 src={cat.image}
-                alt={cat.name}
+                alt=""
                 fill
                 className="object-cover transition-transform duration-700 ease-[var(--ease-editorial)] group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 33vw"

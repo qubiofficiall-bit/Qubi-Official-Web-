@@ -28,6 +28,29 @@ img {
   max-width: 100%;
 }
 
+/* Keyboard focus indicator (only shown for keyboard / assistive navigation) */
+@layer base {
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+/* Hero entrance — runs in CSS so content is visible without waiting for JS */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-hero-in {
+  animation: hero-in 1000ms var(--ease-editorial) 100ms both;
+}
+
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;

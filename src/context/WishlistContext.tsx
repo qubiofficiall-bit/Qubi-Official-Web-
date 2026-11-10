@@ -33,7 +33,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored) as string[];
         if (Array.isArray(parsed)) {
-          setWishlistIds(parsed);
+          // Syncing from an external store (localStorage) after mount, to avoid an SSR mismatch.
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setWishlistIds(parsed.filter((id) => typeof id === "string"));
         }
       }
     } catch {

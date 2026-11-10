@@ -5,6 +5,8 @@ import type { Product } from "@/types";
 interface ProductGridProps {
   products: Product[];
   columns?: 2 | 3 | 4;
+  /** Number of leading cards whose image loads eagerly (only for above-the-fold grids). */
+  eagerCount?: number;
 }
 
 const colsClass = {
@@ -13,7 +15,11 @@ const colsClass = {
   4: "lg:grid-cols-4",
 } as const;
 
-export function ProductGrid({ products, columns = 4 }: ProductGridProps) {
+export function ProductGrid({
+  products,
+  columns = 4,
+  eagerCount = 0,
+}: ProductGridProps) {
   return (
     <div
       className={cn(
@@ -22,7 +28,7 @@ export function ProductGrid({ products, columns = 4 }: ProductGridProps) {
       )}
     >
       {products.map((product, i) => (
-        <ProductCard key={product.id} product={product} priority={i < 4} />
+        <ProductCard key={product.id} product={product} eager={i < eagerCount} />
       ))}
     </div>
   );

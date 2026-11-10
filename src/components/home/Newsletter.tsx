@@ -26,8 +26,8 @@ export function Newsletter() {
           </p>
 
           {submitted ? (
-            <p className="mt-10 text-sm font-[family-name:var(--font-body)] text-[var(--color-fg)]">
-              {"Tesekkurler! Kayit oldunuz."}
+            <p role="status" className="mt-10 text-sm font-[family-name:var(--font-body)] text-[var(--color-fg)]">
+              Teşekkürler! Kayıt oldunuz.
             </p>
           ) : (
             <form
@@ -36,11 +36,14 @@ export function Newsletter() {
             >
               <input
                 type="email"
+                name="email"
                 required
+                autoComplete="email"
+                aria-label="E-posta adresiniz"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="E-posta adresiniz"
-                className="flex-1 border-b border-[var(--color-fg)] bg-transparent px-0 py-3 text-sm font-[family-name:var(--font-body)] text-[var(--color-fg)] placeholder:text-[var(--color-muted-fg)] outline-none"
+                className="flex-1 border-b border-[var(--color-fg)] bg-transparent px-0 py-3 text-sm font-[family-name:var(--font-body)] text-[var(--color-fg)] placeholder:text-[var(--color-muted-fg)] outline-none focus-visible:border-b-2"
               />
               <button
                 type="submit"

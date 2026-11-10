@@ -21,10 +21,10 @@ export function Footer() {
 
           {/* Link Columns */}
           {siteConfig.footer.columns.map((column) => (
-            <div key={column.title}>
-              <h3 className="mb-4 text-xs tracking-[0.1em] font-[family-name:var(--font-body)]">
+            <nav key={column.title} aria-label={column.title}>
+              <h2 className="mb-4 text-xs tracking-[0.1em] font-[family-name:var(--font-body)]">
                 {column.title}
-              </h3>
+              </h2>
               <ul className="flex flex-col gap-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
@@ -37,7 +37,7 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
       </Container>
@@ -46,9 +46,9 @@ export function Footer() {
       <div className="border-t border-white/10">
         <Container>
           <div className="flex flex-col items-center py-12 text-center">
-            <h3 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em]">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-[0.1em]">
               {siteConfig.newsletter.heading}
-            </h3>
+            </h2>
             <p className="mt-2 text-sm text-white/60 font-[family-name:var(--font-body)]">
               {siteConfig.newsletter.subheading}
             </p>
@@ -58,8 +58,12 @@ export function Footer() {
             >
               <input
                 type="email"
+                name="email"
+                required
+                autoComplete="email"
+                aria-label="E-posta adresiniz"
                 placeholder="E-posta adresiniz"
-                className="flex-1 border border-white/20 bg-transparent px-4 py-3 text-xs tracking-[0.05em] text-white placeholder:text-white/40 font-[family-name:var(--font-body)] outline-none transition-colors focus:border-white/60"
+                className="min-w-0 flex-1 border border-white/20 bg-transparent px-4 py-3 text-xs tracking-[0.05em] text-white placeholder:text-white/60 font-[family-name:var(--font-body)] outline-none transition-colors focus:border-white/60"
               />
               <button
                 type="submit"
@@ -76,7 +80,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <Container>
           <div className="flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
-            <p className="text-xs text-white/40 font-[family-name:var(--font-body)]">
+            <p className="text-xs text-white/60 font-[family-name:var(--font-body)]">
               {siteConfig.footer.copyright}
             </p>
             <div className="flex gap-6">
@@ -87,6 +91,7 @@ export function Footer() {
                   className="text-xs text-white/60 transition-colors hover:text-white font-[family-name:var(--font-body)]"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${social.label} (yeni sekmede açılır)`}
                 >
                   {social.label}
                 </a>

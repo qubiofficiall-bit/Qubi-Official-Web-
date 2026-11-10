@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 
-export function useScrollPosition(): number {
+/** Current `window.scrollY`, optionally capped (values above `cap` don't trigger re-renders). */
+export function useScrollPosition(cap: number = Infinity): number {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     function handleScroll() {
-      setScrollY(window.scrollY);
+      setScrollY(Math.min(window.scrollY, cap));
     }
 
     handleScroll();
@@ -16,7 +17,7 @@ export function useScrollPosition(): number {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [cap]);
 
   return scrollY;
 }

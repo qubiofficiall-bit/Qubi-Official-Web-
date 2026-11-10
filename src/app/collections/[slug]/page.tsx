@@ -22,7 +22,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const collection = getCollectionBySlug(slug);
-  if (!collection) return { title: "Koleksiyon Bulunamadi | Qubi Official" };
+  if (!collection) return { title: "Koleksiyon Bulunamadı | Qubi Official" };
   return {
     title: `Koleksiyon: ${collection.name} | Qubi Official`,
     description: collection.description,
@@ -59,12 +59,12 @@ export default async function CollectionPage({ params }: PageProps) {
           {/* Controls */}
           <div className="flex items-center justify-between mb-8">
             <span className="text-xs text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-              {products.length} Urun
+              {products.length} Ürün
             </span>
             <CollectionSort />
           </div>
 
-          <ProductGrid products={products} columns={4} />
+          <ProductGrid products={products} columns={4} eagerCount={2} />
         </div>
       </Container>
     </div>

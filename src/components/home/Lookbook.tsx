@@ -25,20 +25,20 @@ export function Lookbook() {
             >
               <Image
                 src={item.image}
-                alt={item.title}
+                alt=""
                 fill
                 className="object-cover transition-transform duration-700 ease-[var(--ease-editorial)] group-hover:scale-105"
                 sizes={
                   item.layout === "full"
                     ? "100vw"
                     : item.layout === "half"
-                      ? "66vw"
-                      : "33vw"
+                      ? "(max-width: 768px) 100vw, 66vw"
+                      : "(max-width: 768px) 100vw, 33vw"
                 }
               />
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-end p-6">
-                <span className="text-white text-sm uppercase tracking-[0.1em] font-[family-name:var(--font-body)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 group-focus-visible:bg-black/30 transition-colors duration-500 flex items-end p-6">
+                <span className="text-white text-sm uppercase tracking-[0.1em] font-[family-name:var(--font-body)] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
                   {item.title}
                 </span>
               </div>

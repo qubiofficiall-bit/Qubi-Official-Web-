@@ -18,10 +18,10 @@ export default function WishlistPage() {
       <Container>
         <div className="py-12 md:py-20">
           <h1 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-light text-center">
-            FAVORILERIM
+            FAVORİLERİM
           </h1>
           <p className="mt-2 text-center text-sm text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-            {wishlistProducts.length} urun
+            {wishlistProducts.length} ürün
           </p>
 
           {wishlistProducts.length > 0 ? (
@@ -31,13 +31,13 @@ export default function WishlistPage() {
           ) : (
             <div className="mt-16 text-center">
               <p className="text-[var(--color-muted-fg)] font-[family-name:var(--font-body)]">
-                Favori listeniz bos
+                Favori listeniz boş
               </p>
               <Link
                 href="/koleksiyon/yeni-gelenler"
                 className="mt-6 inline-block text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)] underline underline-offset-4 text-[var(--color-fg)] hover:text-[var(--color-muted-fg)] transition-colors"
               >
-                Koleksiyonlari Kesfedin
+                Koleksiyonları Keşfedin
               </Link>
             </div>
           )}

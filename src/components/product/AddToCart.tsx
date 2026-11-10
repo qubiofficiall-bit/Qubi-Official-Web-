@@ -55,14 +55,15 @@ export function AddToCart({
         disabled={added}
       >
         {added
-          ? "EKLENDI ✓"
+          ? "EKLENDİ ✓"
           : selectedSize
             ? "SEPETE EKLE"
-            : "BEDEN SECINIZ"}
+            : "BEDEN SEÇİNİZ"}
       </Button>
       <button
         type="button"
         onClick={() => toggleWishlist(product.id)}
+        aria-pressed={wishlisted}
         className={cn(
           "flex w-full items-center justify-center gap-2 py-3 text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)] transition-colors cursor-pointer",
           wishlisted
@@ -71,13 +72,14 @@ export function AddToCart({
         )}
       >
         <Heart
+          aria-hidden="true"
           className={cn(
             "h-4 w-4",
             wishlisted && "fill-[var(--color-fg)]"
           )}
         />
         <span>
-          {wishlisted ? "FAVORILERDE ✓" : "FAVORILERE EKLE"}
+          {wishlisted ? "FAVORİLERDE ✓" : "FAVORİLERE EKLE"}
         </span>
       </button>
     </div>

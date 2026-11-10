@@ -19,7 +19,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
   const accordionItems = [
     {
-      title: "Aciklama",
+      title: "Açıklama",
       content: (
         <p className="text-sm leading-relaxed">{product.description}</p>
       ),
@@ -35,7 +35,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       ),
     },
     {
-      title: "Bakim Talimatlari",
+      title: "Bakım Talimatları",
       content: (
         <ul className="text-sm space-y-1">
           {product.care.map((c, i) => (
@@ -45,11 +45,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
       ),
     },
     {
-      title: "Kargo ve Iade",
+      title: "Kargo ve İade",
       content: (
         <div className="text-sm space-y-2">
-          <p>3000 TL uzeri siparislerde ucretsiz kargo.</p>
-          <p>14 gun icinde ucretsiz iade.</p>
+          <p>3000 TL üzeri siparişlerde ücretsiz kargo.</p>
+          <p>14 gün içinde ücretsiz iade.</p>
         </div>
       ),
     },
@@ -75,9 +75,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
         {product.compareAtPrice ? (
           <>
             <span className="text-[var(--color-error)]">
+              <span className="sr-only">İndirimli fiyat: </span>
               {formatPrice(product.price)}
             </span>
             <span className="line-through text-[var(--color-muted-fg)] text-base">
+              <span className="sr-only">Eski fiyat: </span>
               {formatPrice(product.compareAtPrice)}
             </span>
           </>
@@ -98,7 +100,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
               {product.colors.find((c) => c.slug === selectedColor)?.name}
             </span>
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3" role="group" aria-label="Renk seçimi">
             {product.colors.map((color) => (
               <button
                 key={color.slug}
@@ -112,6 +114,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 )}
                 style={{ backgroundColor: color.hex }}
                 aria-label={color.name}
+                aria-pressed={selectedColor === color.slug}
               />
             ))}
           </div>
@@ -132,12 +135,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
               Beden Rehberi
             </Link>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Beden seçimi">
             {product.sizes.map((size) => (
               <button
                 key={size}
                 type="button"
                 onClick={() => setSelectedSize(size)}
+                aria-pressed={selectedSize === size}
                 className={cn(
                   "min-w-[48px] px-3 py-2 border text-xs uppercase tracking-[0.05em] font-[family-name:var(--font-body)] transition-colors cursor-pointer",
                   selectedSize === size

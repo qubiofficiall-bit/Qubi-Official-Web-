@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { Plus, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,8 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
     defaultOpen ?? null
   );
 
+  const baseId = useId();
+
   function toggle(index: number) {
     setOpenIndex((prev) => (prev === index ? null : index));
   }
@@ -27,6 +29,8 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
     <div className="w-full">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
+        const buttonId = `${baseId}-button-${index}`;
+        const panelId = `${baseId}-panel-${index}`;
 
         return (
           <div
@@ -35,7 +39,10 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
           >
             <button
               type="button"
+              id={buttonId}
               onClick={() => toggle(index)}
+              aria-expanded={isOpen}
+              aria-controls={panelId}
               className={cn(
                 "flex w-full items-center justify-between py-4 text-left text-sm font-[family-name:var(--font-body)] uppercase tracking-[0.05em] transition-colors cursor-pointer",
                 "text-[var(--color-fg)] hover:text-[var(--color-muted-fg)]"
@@ -43,12 +50,16 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
             >
               <span>{item.title}</span>
               {isOpen ? (
-                <Minus className="h-4 w-4 shrink-0" />
+                <Minus aria-hidden="true" className="h-4 w-4 shrink-0" />
               ) : (
-                <Plus className="h-4 w-4 shrink-0" />
+                <Plus aria-hidden="true" className="h-4 w-4 shrink-0" />
               )}
             </button>
             <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              inert={!isOpen}
               className={cn(
                 "grid transition-[grid-template-rows] duration-300 ease-[var(--ease-editorial)]",
                 isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"

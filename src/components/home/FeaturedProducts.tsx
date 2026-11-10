@@ -11,13 +11,13 @@ export function FeaturedProducts() {
       <Container>
         <div className="flex items-center justify-between mb-10">
           <h2 className="font-[family-name:var(--font-body)] text-xs uppercase tracking-[0.15em]">
-            {"ONE CIKAN PARCALAR"}
+            ÖNE ÇIKAN PARÇALAR
           </h2>
           <Link
             href="/koleksiyon/yeni-gelenler"
             className="text-xs uppercase tracking-[0.1em] font-[family-name:var(--font-body)] text-[var(--color-muted-fg)] hover:text-[var(--color-fg)] transition-colors underline underline-offset-4"
           >
-            {"Tumunu Gor"}
+            Tümünü Gör
           </Link>
         </div>
         <ProductGrid products={products} columns={4} />

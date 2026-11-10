@@ -16,6 +16,22 @@ const sizeStyles = {
   lg: "px-8 py-4",
 } as const;
 
+const baseStyles =
+  "inline-block uppercase tracking-[0.1em] text-xs font-[family-name:var(--font-body)] rounded-none transition-all duration-300 cursor-pointer";
+
+/** Button class names — use on a `<Link>` when a navigation should look like a button. */
+export function buttonVariants({
+  variant = "primary",
+  size = "md",
+  className,
+}: {
+  variant?: keyof typeof variantStyles;
+  size?: keyof typeof sizeStyles;
+  className?: string;
+} = {}) {
+  return cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
+}
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: keyof typeof variantStyles;
   size?: keyof typeof sizeStyles;
@@ -32,12 +48,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={cn(
-        "uppercase tracking-[0.1em] text-xs font-[family-name:var(--font-body)] rounded-none transition-all duration-300 cursor-pointer",
-        variantStyles[variant],
-        sizeStyles[size],
-        className
-      )}
+      className={buttonVariants({ variant, size, className })}
       {...props}
     >
       {children}
